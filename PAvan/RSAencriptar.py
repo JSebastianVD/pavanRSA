@@ -23,11 +23,33 @@ def generacionpyq(n):
         q = numero_primo_random(n)
     return p,q
 
+def es_coprimo(n,m):
+    global lista
+    lista = []
+    global lista2
+    lista2=[]
+    for i in range(2,n+1):
+        if n%i==0:
+            lista.append(i)
+    for j in range(2,m+1):
+        if m%j==0:
+            lista2.append(j)
+    for k in range(len(lista)):
+        if lista[k] in lista2:
+            return False
+
+    return True
+
 def generacion_clave():
     num = int(input("Digite numero mayor o igual a 2: "))
     while num < 2:
         print("Error, debe ser mayor o igual a 2")
         num = int(input("Digite numero mayor o igual a 2: "))
     p,q= generacionpyq(num)
-    n =
-
+    n = p*q
+    phi = (p-1)*(q-1)
+    e = random.randrange(1, phi)
+    while not es_coprimo(e,phi):
+        e = random.randrange(1,phi)
+    print(str(e))
+    print(str(phi))
