@@ -40,16 +40,72 @@ def es_coprimo(n,m):
 
     return True
 
+
+def euclides_extendido(a,b):
+    s = 1
+    t = 0
+    sp =0
+    tp = 1
+    finala = a
+    finalb = b
+    while b!= 0:
+        q = a//b
+        r = a % b
+        a,s,t,b,sp,tp = b,sp,tp,r,(s - (sp * q)), (t - (tp * q))
+    if s < 0:
+        s += finala
+    return s
+
+
 def generacion_clave():
+    clave_publica = []
+    clave_privada = []
+    d = 1
     num = int(input("Digite numero mayor o igual a 2: "))
     while num < 2:
         print("Error, debe ser mayor o igual a 2")
         num = int(input("Digite numero mayor o igual a 2: "))
     p,q= generacionpyq(num)
     n = p*q
+    clave_privada.append(n)
+    clave_publica.append(n)
     phi = (p-1)*(q-1)
     e = random.randrange(1, phi)
     while not es_coprimo(e,phi):
         e = random.randrange(1,phi)
-    print(str(e))
-    print(str(phi))
+    d = euclides_extendido(e,phi)
+    clave_privada.append(d)
+    clave_publica.append(e)
+    return clave_publica, clave_privada
+
+def mypow(x,n):
+    if n==1:
+        x=x
+    elif n%2==0:
+        x= pow(mypow(x,n/2),2)
+    elif n%2==1:
+        x= x*mypow(x,n-1)
+    return x
+
+def cifrado(mensaje_letra, clave):
+    mensaje_num= []
+    for i in range(len(mensaje_letra)):
+        caracter = ord(mensaje_letra[i])
+        mensaje_num.append(caracter)
+    for j in range(len(mensaje_num)):
+        mensaje_num[j] = mypow(mensaje_num[j],clave[1])%clave[0]
+    return mensaje_num
+
+def descifrado(mensaje_num,clave):
+    mensaje_letra= ""
+    for i in range(len(mensaje_num)):
+        mensaje_num[i] = mypow(mensaje_num[i], clave[1]) % clave[0]
+    for j in range(len(mensaje_num)):
+        mensaje_letra = mensaje_letra + chr(mensaje_num[j])
+    return mensaje_letra
+
+clavepriv=[]
+clavepubli=[]
+clavepubli,clavepriv = generacion_clave()
+cifrado("Ho la",clavepubli)
+print(descifrado(cifrado("Hola",clavepubli),clavepriv))
