@@ -40,7 +40,6 @@ def es_coprimo(n,m):
 
     return True
 
-
 def euclides_extendido(a,b):
     s = 1
     t = 0
@@ -53,7 +52,9 @@ def euclides_extendido(a,b):
         r = a % b
         a,s,t,b,sp,tp = b,sp,tp,r,(s - (sp * q)), (t - (tp * q))
     if s < 0:
-        s += finala
+        s += finalb
+    if t < 0:
+        t += finala
     return s
 
 
@@ -107,5 +108,8 @@ def descifrado(mensaje_num,clave):
 clavepriv=[]
 clavepubli=[]
 clavepubli,clavepriv = generacion_clave()
-cifrado("Ho la",clavepubli)
-print(descifrado(cifrado("Hola",clavepubli),clavepriv))
+
+print(descifrado(cifrado("Hola como estas",clavepubli),clavepriv))
+
+
+
