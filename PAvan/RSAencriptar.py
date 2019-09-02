@@ -90,19 +90,29 @@ def mypow(x,n):
 
 def cifrado(mensaje_letra, clave):
     mensaje_num= []
+    mensaje_num2= ""
     for i in range(len(mensaje_letra)):
         caracter = ord(mensaje_letra[i])
         mensaje_num.append(caracter)
     for j in range(len(mensaje_num)):
         mensaje_num[j] = mypow(mensaje_num[j],clave[1])%clave[0]
-    return mensaje_num
+    for k in range(len(mensaje_num)):
+        mensaje_num2= mensaje_num2+ str(mensaje_num[k])
+        if k != len(mensaje_num)-1:
+           mensaje_num2=mensaje_num2+"-"
+    return mensaje_num2
 
 def descifrado(mensaje_num,clave):
     mensaje_letra= ""
-    for i in range(len(mensaje_num)):
-        mensaje_num[i] = mypow(mensaje_num[i], clave[1]) % clave[0]
-    for j in range(len(mensaje_num)):
-        mensaje_letra = mensaje_letra + chr(mensaje_num[j])
+    mensaje_num2=[]
+    mensaje_num2= mensaje_num.split("-")
+    for k in range(len(mensaje_num2)):
+        mensaje_num2[k]= int(mensaje_num2[k])
+    print(mensaje_num2)
+    for i in range(len(mensaje_num2)):
+        mensaje_num2[i] = mypow(mensaje_num2[i], clave[1]) % clave[0]
+    for j in range(len(mensaje_num2)):
+        mensaje_letra = mensaje_letra + chr(mensaje_num2[j])
     return mensaje_letra
 
 clavepriv=[]
@@ -110,6 +120,5 @@ clavepubli=[]
 clavepubli,clavepriv = generacion_clave()
 
 print(descifrado(cifrado("Hola como estas",clavepubli),clavepriv))
-
 
 
